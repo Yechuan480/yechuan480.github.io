@@ -1,12 +1,6 @@
-- <strong>S. Li</strong>, X. Yang*, A. Cao*, K. Fan, Y. Liu, C. Wang, and Q.Niu (2024). Label Noise-Robust Learning for Microseismic Arrival Time Picking. <strong>In revision.</strong> [[Code]](https://github.com/senli1073/LNRL)
+- <strong>Y. Lu</strong>, C. Chen, K. Huang, M. Zitnik, and Q. Wang, "GNN 101: Visual Learning of Graph Neural Networks in Your Web Browser," arXiv preprint arXiv:2411.17849, Nov. 2024.  
 
-- X. Yang, <strong>S. Li</strong>, A. Cao*, C. Wang*, Y. Liu, X. Bai, and Q. Niu (2024). Deep Transfer Learning for P-wave Arrival Identification and Automatic Seismic Source Location in Underground Mines. <strong>International Journal of Rock Mechanics and Mining Sciences</strong>. [[Paper]](https://doi.org/10.1016/j.ijrmms.2024.105888)
+- <strong>Y. Lu</strong>, C. Chen, M. Xu, and Q. Wang, "What Can a Node Learn from Its Neighbors in Graph Neural Networks?" presented at the 7th VISxAI Workshop at IEEE VIS 2024, St. Pete Beach, Florida, Oct. 2024. [Online]. Available: https://visxai.io/
 
-- <strong>S. Li</strong>, X. Yang*, A. Cao*, C. Wang, Y. Liu, Y. Liu, and Q. Niu (2024). SeisT: A Foundational Deep-Learning Model for Earthquake Monitoring Tasks. <strong>IEEE Transactions on Geoscience and Remote Sensing</strong>. [[Paper]](https://doi.org/10.1109/TGRS.2024.3371503) [[Code]](https://github.com/senli1073/SeisT)
-
-- A. Cao, X. Yang, C. Wang*, <strong>S. Li</strong>, Y. Liu, L. Dou, and Q. Niu (2023). High-Precision Phase Picking and Automatic Source Locating Method for Seismicity in Mines Based on Deep Transfer Learning. <strong>Journal of China Coal Society</strong>. [[Paper]](https://doi.org/10.13225/j.cnki.jccs.2023.0095)
-
-- A. Cao, Y. Liu, X. Yang*, <strong>S. Li</strong>, C. Wang, X. Bai, and Y. Liu (2022). Physical Index and Data Fusion-Driven Method for Coal Burst Prediction in Time Sequence. <strong>Journal of China Coal Society</strong>. [[Paper]](https://doi.org/10.13225/j.cnki.jccs.2022.0680)
-
-- X. Yang, X. Yu, C. Zhang, <strong>S. Li</strong>, and Q. Niu (2021). MineGPS: Battery-Free Localization Base Station for Coal Mine Environment. <strong>IEEE Communications Letters</strong>. [[Paper]](https://doi.org/10.1109/LCOMM.2021.3081593)
+- R. Strausbaugh, D. Warshofsky, P. Kelly, M. S. S. Gill, A. Toscano, <strong>Y. Lu</strong>, S. Leggio, and A. Kamenshikova, "GRB231115A: TURBO Pre-Burst Optical Upper Limits," GRB Coordinates Network, vol. 35296, p. 1, Dec. 2023. [[Online]]. Available:https://ui.adsabs.harvard.edu/abs/2023GCN.35296....1S
 

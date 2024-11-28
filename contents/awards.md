@@ -1,9 +1,5 @@
-- First-prize Academic Scholarship, 2023.
+- Undergraduate Research(UROP) Scholarship, 2023.
 
-- Freshman Academic Scholarship, 2022.
+- Dean's Lists, 2023,2024.
 
-- Excellent Graduation Project of Jiangsu Province, 2022.
-
-- First-prize Enterprise Scholarship, 2021.
-
-- First-prize Academic Scholarship, 2019.
+- University Honor Program, 2024.
