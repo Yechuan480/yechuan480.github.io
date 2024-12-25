@@ -1,9 +1,9 @@
-- China post-graduate mathematical contest in modeling National First Prize, 2024.
+- 中国研究生数学建模竞赛全国一等奖（排名：前234/20247）, 2024.
 
-- Outstanding graduates from Jiangsu Province, 2024.
+- 江苏省优秀毕业生, 2024.
 
-- Provincial-Level Merit Student from Jiangsu Province, 2023.
+- 江苏省三好学生, 2023.
 
-- RAICOM — Robot Developer Competition National Second Prize, 2022.
+- 睿抗机器人开发者大赛全国二等奖, 2022.
 
-- CUMCM — Contemporary Undergraduate Mathematical Contest in Modeling National First Prize, 2022.
+- 全国大学生数学建模竞赛全国一等奖（排名：前299/54257）, 2022.
