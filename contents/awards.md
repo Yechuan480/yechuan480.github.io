@@ -1,6 +1,6 @@
 - National Scholarship of Graduate Student, 2024.
 
-- First-prize Scholarship of CUMT, 2024.
+- wwwwwww Scholarship of CUMT, 2024.
 
 - First-prize Scholarship of CUMT, 2023.
 
