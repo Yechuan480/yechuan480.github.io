@@ -1,6 +1,6 @@
-  - **National Second Prize of National College Students' Geological Skills Competition** <span style="float: right;">*(Fall 2024)*</span>
+  - **National Second Prize** of National College Students' Geological Skills Competition <span style="float: right;">*(Fall 2024)*</span>
 
-    - **Provincial Third Prize of Zhejiang Province College Students' Advanced Mathematics Competition** <span style="float: right;">*(Summer 2024)*</span>
+    - **Provincial Third Prize** of Zhejiang Province College Students' Advanced Mathematics Competition <span style="float: right;">*(Summer 2024)*</span>
 
     - **Scholarship of Zhejiang Province Government** <span style="float: right;">*(Fall 2024)*</span>
    
