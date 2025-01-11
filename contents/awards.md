@@ -1,13 +1,11 @@
-- National Scholarship of Graduate Student, 2024.
+  - **National Second Prize of National College Students' Geological Skills Competition** <span style="float: right;">*(Fall 2024)*</span>
 
-- First-prize Scholarship of CUMT, 2024.
+    - **Provincial Third Prize of Zhejiang Province College Students' Advanced Mathematics Competition** <span style="float: right;">*(Summer 2024)*</span>
 
-- First-prize Scholarship of CUMT, 2023.
-
-- Freshman Scholarship of CUMT, 2022.
-
-- Excellent Graduation Project of Jiangsu Province, 2022.
-
-- First-prize Enterprise Scholarship of CUMT, 2020.
-
-- First-prize Scholarship of CUMT, 2019.
+    - **Scholarship of Zhejiang Province Government** <span style="float: right;">*(Fall 2024)*</span>
+   
+    - **Outstanding Student of ZJU** <span style="float: right;">*(Fall 2023)*</span>
+   
+    - **First Prize Scholarship of ZJU** <span style="float: right;">*(Fall 2024)*</span>
+   
+    - **Third Prize Scholarship of ZJU** <span style="float: right;">*(Fall 2023)*</span>  
