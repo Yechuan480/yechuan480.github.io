@@ -16,7 +16,7 @@ Supervisor： Prof. Jia Liu.\
              
 
                     
-style="font-family: 'Times New Roman', Times, serif;">  **Research Asistant** <span class="year">Present</span>.\
+**Research Asistant** <span class="year">Present</span>.\
               
 Supervisor： Prof. Jia Liu.\
            
