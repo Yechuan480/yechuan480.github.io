@@ -5,15 +5,15 @@
  
 Supervisor： Prof. Jia Liu
 
-- The origin of lunar regolith water is unclear： Solar Wind, Meteorites, Cosmic Dust, Molecular Clouds?
+· The origin of lunar regolith water is unclear： Solar Wind, Meteorites, Cosmic Dust, Molecular Clouds?
 
-- To constrain the origin of H20 in lunar regolith
+· To constrain the origin of H20 in lunar regolith
         
-- Focus on Hydrogen isotope in alteration minerals
+· Focus on Hydrogen isotope in alteration minerals
            
-- Done the basic mineral identification by microscope and SEM
+· Done the basic mineral identification by microscope and SEM
            
-- Determing the isotope composition by SIMS
+· Determing the isotope composition by SIMS
              
 
                     
@@ -21,7 +21,7 @@ Supervisor： Prof. Jia Liu
               
 Supervisor： Prof. Jia Liu
            
-- Determing the content of H20 in IODP & OIB Samples by FTIR
+· Determing the content of H20 in IODP & OIB Samples by FTIR
         
-- Determing the trace element in minerals by EPMA 
+· Determing the trace element in minerals by EPMA 
 
