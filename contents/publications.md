@@ -1,6 +1,6 @@
- Student Research Training Program <span class="year">2024.9 - 2025.2</span>.\
+ **Student Research Training Program** <span class="year">2024.9 - 2025.2</span>.\
 
-<i>The origin of water-ice in the lunar regolith：Constraints from lunar meteorites</i>.\
+*The origin of water-ice in the lunar regolith：Constraints from lunar meteorites*.\
  
 Supervisor： Prof. Jia Liu.\
 
@@ -16,7 +16,7 @@ Supervisor： Prof. Jia Liu.\
              
 
                     
-style="font-family: 'Times New Roman', Times, serif;">  Research Asistant <span class="year">Present</span>.\
+style="font-family: 'Times New Roman', Times, serif;">  **Research Asistant** <span class="year">Present</span>.\
               
 Supervisor： Prof. Jia Liu.\
            
