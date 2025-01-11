@@ -4,7 +4,7 @@
 
 - **Scholarship of Zhejiang Province Government** <span style="float: right;">*Fall 2024*</span>
    
-- **Outstanding Student of ZJU** <span style="float: right;">*Fall 2023*</span>
+- **Outstanding Student of ZJU** <span style="float: right;">*Fall 2024*</span>
    
 - **First Prize Scholarship of ZJU** <span style="float: right;">*Fall 2024*</span>
    
