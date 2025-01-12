@@ -1,7 +1,7 @@
 
 
 
-He is a junior student majoring in Geology, at School of Earth Sciences, Zhejiang University, China.
+He is a self-motivated junior student majoring in Geology, at School of Earth Sciences, Zhejiang University, China.
 
 #### Email
 chen04@zju.edu.cn
