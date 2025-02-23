@@ -9,7 +9,7 @@ chen04@zju.edu.cn
 #### Education
 Zhejiang University (ZJU) , China <span class="year">2022 - Present</span>.\
 B.S. in Geology 
-GPA: 3.92/4.00.     
+GPA: 3.85/4.00.     
 *Related courses：Calculus, Physics, Linear Algebra, Probability and Mathematical Statistics, Physical Chemistry, Principles Of Mineralogy And Petrology, Geochemistry.*
 #### Research Interests
 Cosmochemistry, 
