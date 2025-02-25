@@ -17,7 +17,7 @@ Supervisor： Prof. Jia Liu
              
 
                     
-**Research Asistant** <span class="year">*Present*</span>
+**Undergraduate Research Asistant** <span class="year">*Present*</span>
               
 Supervisor： Prof. Jia Liu
            
