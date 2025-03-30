@@ -27,7 +27,7 @@
     <!-- Custom CSS -->
     <style>
         :root {
-            --primary: #002060; /* 主色系 RGB(0, 32, 96) */
+            --primary: #002060; /* Primary color RGB(0, 32, 96) */
         }
         .navbar, a, h1, h2, h3, h4, h5, h6 {
             color: var(--primary);
@@ -68,6 +68,26 @@
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #002060;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #003080;
+        }
+        .highlight {
+            background-color: #ffd700; /* Yellow highlight */
+            padding: 2px 5px;
+            border-radius: 3px;
         }
     </style>
 
@@ -79,7 +99,7 @@
     <!-- Navigation -->
     <nav class="header navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
         <div class="container px-5">
-            <a class="navbar-brand fw-bold" href="../../../index.html">YiFan Chen | 陈奕帆</a>
+            <a class="navbar-brand fw-bold" href="../../../index.html">YiFan Chen</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 MENU <i class="bi-list"></i>
@@ -104,57 +124,131 @@
             </div>
         </section>
 
-        <!-- Program Description -->
-        <section class="mt-5" id="description">
+        <!-- Program Overview -->
+        <section class="mt-5" id="overview">
             <div class="section-bg">
                 <header>
                     <h2><i class="bi bi-file-code-fill"></i> Program Overview</h2>
                 </header>
                 <div class="main-body">
-                    <p><b>Description:</b> Documents Hunter is a Python tool designed to search and organize files on your local system based on specific criteria (e.g., file type, keyword, date).</p>
+                    <p><b>Description:</b> Documents Hunter is a Python tool designed to crawl and download files (e.g., PDF, ZIP) from a specified website, organizing them by file type into local directories.</p>
                     <p><b>Functionality:</b></p>
                     <ul>
-                        <li>Scans directories recursively for documents.</li>
-                        <li>Filters files by extension (e.g., .pdf, .docx).</li>
-                        <li>Extracts metadata or content keywords (planned feature).</li>
+                        <li>Extracts download links from webpages, supporting multiple file formats (PDF, ZIP, DOC, etc.).</li>
+                        <li>Automatically creates subfolders categorized by file type.</li>
+                        <li>Downloads files and saves them to a specified directory with cleaned filenames.</li>
                     </ul>
                     <p><b>Data Format Requirements:</b></p>
                     <ul>
-                        <li>Input: Directory path (string).</li>
-                        <li>Optional: List of file extensions (e.g., ['.pdf', '.txt']).</li>
-                        <li>Output: List of file paths or JSON report.</li>
+                        <li><b>Input:</b> Target website URL (string, e.g., "https://example.com").</li>
+                        <li><b>Output:</b> Files saved by type in local directories (e.g., "path\to\downloads\pdf\").</li>
+                        <li><b>Dependencies:</b> Requires Python libraries: <code>requests</code>, <code>beautifulsoup4</code>.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- Sample Code -->
+        <!-- Code and Execution -->
         <section class="mt-5" id="code">
             <div class="section-bg">
                 <header>
-                    <h2><i class="bi bi-code-slash"></i> Sample Code</h2>
+                    <h2><i class="bi bi-code-slash"></i> Code and Execution</h2>
                 </header>
                 <div class="main-body">
-                    <pre><code>
+                    <h3>Code:</h3>
+                    <pre><code id="code-block">import requests
+from bs4 import BeautifulSoup
 import os
-
-def find_documents(directory, extensions=None):
-    if extensions is None:
-        extensions = ['.pdf', '.docx', '.txt']
-    found_files = []
-    for root, _, files in os.walk(directory):
-        for file in files:
-            if any(file.endswith(ext) for ext in extensions):
-                found_files.append(os.path.join(root, file))
-    return found_files
-
-# Example usage
-directory = "C:/Users/YiFan/Documents"
-files = find_documents(directory)
-for file in files:
-    print(file)
+import urllib.parse
+import re
+def download_file(url, save_path):
+    """Download a file and save it to the specified path"""
+    try:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        with open(save_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        print(f"Successfully downloaded: {save_path}")
+    except requests.RequestException as e:
+        print(f"Download failed {url}: {e}")
+def crawl_downloads(url, base_save_dir=<span class="highlight">r"C:\Users\Example\Downloads"</span>):
+    """Crawl download links from a website and save by file type"""
+    if not os.path.exists(base_save_dir):
+        os.makedirs(base_save_dir)
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        download_links = {}
+        for link in soup.find_all('a', href=True):
+            href = link['href']
+            link_text = link.text.strip()
+            file_ext = None
+            match = re.search(r'\.(\w+)$', href)
+            if match:
+                file_ext = match.group(1).lower()
+            if file_ext and file_ext in ['pdf', 'zip', 'doc', 'docx', 'jpg', 'png', 'xls', 'xlsx', 'txt']:
+                file_name = link_text if link_text else os.path.basename(href.split('?')[0])
+                file_name = re.sub(r'[<>:"/\\|?*]', '', file_name)
+                if not file_name:
+                    file_name = f"unnamed.{file_ext}"
+                elif not file_name.endswith(f".{file_ext}"):
+                    file_name += f".{file_ext}"
+                download_links[href] = (file_name, file_ext)
+        for href, (file_name, file_ext) in download_links.items():
+            full_url = urllib.parse.urljoin(url, href)
+            sub_dir = os.path.join(base_save_dir, file_ext)
+            if not os.path.exists(sub_dir):
+                os.makedirs(sub_dir)
+            save_path = os.path.join(sub_dir, file_name)
+            print(f"Found download link: {full_url} -> {save_path}")
+            download_file(full_url, save_path)
+    except requests.RequestException as e:
+        print(f"Failed to access website {url}: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+if __name__ == "__main__":
+    target_url = <span class="highlight">"https://example.org/resources"</span>
+    crawl_downloads(target_url)
                     </code></pre>
-                    <p><b>Note:</b> This is a placeholder code. Replace with actual implementation.</p>
+                    <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+
+                    <p><b>Note:</b> Replace highlighted values (<span class="highlight">yellow</span>) with your own URL and save path.</p>
+
+                    <h3>Execution:</h3>
+                    <p>1. Install required libraries:</p>
+                    <pre><code>pip install requests beautifulsoup4</code></pre>
+                    <p>2. Save the code as <code>documents_hunter.py</code>, then run in the command line:</p>
+                    <pre><code>python documents_hunter.py</code></pre>
+                    <p>Modify <code>target_url</code> and <code>base_save_dir</code> as needed before running.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Example -->
+        <section class="mt-5" id="example">
+            <div class="section-bg">
+                <header>
+                    <h2><i class="bi bi-lightbulb-fill"></i> Example</h2>
+                </header>
+                <div class="main-body">
+                    <p><b>Example:</b> Using <a href="https://curator.jsc.nasa.gov/lunar/lsc/">NASA Lunar Sample Compendium</a> as the target website.</p>
+                    <p><b>Steps:</b></p>
+                    <ul>
+                        <li>Set <code>target_url</code> to <code>"https://curator.jsc.nasa.gov/lunar/lsc/"</code>.</li>
+                        <li>Run <code>python documents_hunter.py</code>.</li>
+                    </ul>
+                    <p><b>Result:</b></p>
+                    <pre><code>
+Found download link: https://curator.jsc.nasa.gov/lunar/lsc/sample.pdf -> downloads\pdf\sample.pdf
+Successfully downloaded: downloads\pdf\sample.pdf
+Found download link: https://curator.jsc.nasa.gov/lunar/lsc/data.zip -> downloads\zip\data.zip
+Successfully downloaded: downloads\zip\data.zip
+                    </code></pre>
+                    <p><b>Note:</b> Actual results depend on the website's available file links. Files are saved by type in subfolders under the specified directory.</p>
                 </div>
             </div>
         </section>
@@ -171,6 +265,18 @@ for file in files:
             </div>
         </div>
     </footer>
+
+    <!-- Copy Code Script -->
+    <script>
+        function copyCode() {
+            const code = document.getElementById("code-block").innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("Code copied to clipboard!");
+            }, (err) => {
+                alert("Failed to copy code: " + err);
+            });
+        }
+    </script>
 </body>
 
 </html>
