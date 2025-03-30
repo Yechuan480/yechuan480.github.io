@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>CS2战术推演</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CS2战术推演</h1>
+        <div class="controls">
+            <select id="mapSelect">
+                <option value="dust2.png">Dust2</option>
+                <option value="mirage.png">Mirage</option>
+                <option value="inferno.png">Inferno</option>
+                <option value="nuke.png">Nuke</option>
+                <option value="vertigo.png">Vertigo</option>
+                <option value="ancient.png">Ancient</option>
+                <option value="anubis.png">Anubis</option>
+                <option value="overpass.png">Overpass</option>
+                <option value="train.png">Train</option>
+                <option value="office.png">Office</option>
+                <option value="italy.png">Italy</option>
+            </select>
+            <select id="cttMode">
+                <option value="CT">CT</option>
+                <option value="T">T</option>
+            </select>
+            <select id="propsMode">
+                <option value="Smoke">烟雾点</option>
+            </select>
+            <select id="freeDrawMode">
+                <option value="Arrow">箭头</option>
+                <option value="Ellipse">椭圆</option>
+                <option value="Pen">画笔</option>
+            </select>
+            <button id="clearCanvas">清除标记</button>
+            <button id="saveImage">保存为图片</button>
+            <p>点击地图进行标注（Shift+拖动画正圆）</p>
+        </div>
+        <canvas id="mapCanvas"></canvas>
+        <footer>
+            <p>Yechuan</p>
+            <p>图片来源：GAMEMAPS</p>
+            <p>
+                <a href="https://www.cc98.org" target="_blank">cc98</a> | 
+                <a href="https://www.zjuers.com" target="_blank">ZJU轻首页</a>
+            </p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
