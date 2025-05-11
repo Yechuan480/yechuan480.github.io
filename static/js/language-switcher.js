@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const placeholderAttr = lang === 'zh' ? 'data-placeholder-zh' : 'data-placeholder-en';
             input.placeholder = input.getAttribute(placeholderAttr) || ''; // Fallback to empty if attribute missing
         });
+
+        // Update aria-labels
+        const ariaLabelElements = document.querySelectorAll('[data-aria-label-zh]');
+        ariaLabelElements.forEach(el => {
+            const ariaLabelAttr = lang === 'zh' ? 'data-aria-label-zh' : 'data-aria-label-en';
+            el.setAttribute('aria-label', el.getAttribute(ariaLabelAttr) || '');
+        });
     }
 
     // Determine initial language

@@ -11,12 +11,6 @@
     <!-- Icon -->
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
     
-    <!-- Language Switcher -->
-    <div id="language-switcher" class="language-switch" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-        <button class="language-btn active" data-lang="zh" style="background-color: #002060; color: white; border: none; border-radius: 4px; padding: 5px 10px; margin-left: 5px; cursor: pointer;">中文</button>
-        <button class="language-btn" data-lang="en" style="background-color: #002060; color: white; border: none; border-radius: 4px; padding: 5px 10px; margin-left: 5px; cursor: pointer;">English</button>
-    </div>
-
     <!-- Bootstrap icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 
@@ -161,12 +155,18 @@
 </head>
 
 <body id="page-top">
+    <!-- Language Switcher -->
+    <div id="language-switcher" class="language-switch" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <button class="language-btn active" data-lang="zh" style="background-color: #002060; color: white; border: none; border-radius: 4px; padding: 5px 10px; margin-left: 5px; cursor: pointer;">中文</button>
+        <button class="language-btn" data-lang="en" style="background-color: #002060; color: white; border: none; border-radius: 4px; padding: 5px 10px; margin-left: 5px; cursor: pointer;">English</button>
+    </div>
+
     <!-- Navigation -->
     <nav class="header navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
         <div class="container px-5">
             <a id="page-top-title" class="navbar-brand fw-bold" href="#page-top"><span class="lang-zh">陈奕帆</span><span class="lang-en" style="display:none;">YiFan Chen</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarResponsive" aria-expanded="false" data-aria-label-en="Toggle navigation" data-aria-label-zh="切换导航" aria-label="切换导航">
                 <span class="lang-zh">菜单</span><span class="lang-en" style="display:none;">MENU</span> <i class="bi-list"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -283,7 +283,7 @@
                 <section class="mt-5" id="awards">
                     <div class="section-bg">
                         <header>
-                            <h2 id="awards-subtitle"><i class="bi bi-award-fill"></i> AWARDS</h2>
+                            <h2 id="awards-subtitle"><i class="bi bi-award-fill"></i> <span class="lang-zh">奖项</span><span class="lang-en" style="display:none;">AWARDS</span></h2>
                         </header>
                         <div class="main-body">
                             - National Second Prize of National College Students' Geological Skills Competition <span class="year"><i>Fall 2024</i></span><br>
@@ -300,25 +300,25 @@
                 <section class="mt-5" id="internship">
                     <div class="section-bg">
                         <header>
-                            <h2 id="internship-subtitle"><i class="bi bi-hammer"></i> INTERNSHIP</h2>
+                            <h2 id="internship-subtitle"><i class="bi bi-hammer"></i> <span class="lang-zh">实习</span><span class="lang-en" style="display:none;">INTERNSHIP</span></h2>
                         </header>
                         <div class="main-body">
                             Field Trip For Physical Geology in Zhejiang Province <span class="year"><i>Summer 2023</i></span><br>
                             <div style="text-align: center;">
                                 <img src="static/assets/img/internship1.jpg" alt="Typical Lithophysa Structure" width="500" height="400"><br>
-                                <figcaption>Typical Lithophysa Structure</figcaption>
+                                <figcaption><span class="lang-zh">典型石泡构造</span><span class="lang-en" style="display:none;">Typical Lithophysa Structure</span></figcaption>
                             </div><br>
 
                             Geological Mapping Field Trip in the southern of Tanlu fault zone <span class="year"><i>Summer 2024</i></span><br>
                             <div style="text-align: center;">
                                 <img src="static/assets/img/internship2.jpg" alt="Reverse Fault" width="500" height="300"><br>
-                                <figcaption>Reverse Fault</figcaption>
+                                <figcaption><span class="lang-zh">逆冲断层</span><span class="lang-en" style="display:none;">Reverse Fault</span></figcaption>
                             </div><br>
 
                             National College Students' Geological Skills Competition <span class="year"><i>Fall 2024</i></span><br>
                             <div style="text-align: center;">
                                 <img src="static/assets/img/internship3.jpg" alt="Awards Ceremony" width="500" height="300"><br>
-                                <figcaption>Awards Ceremony</figcaption>
+                                <figcaption><span class="lang-zh">颁奖典礼</span><span class="lang-en" style="display:none;">Awards Ceremony</span></figcaption>
                             </div>
                         </div>
                     </div>
@@ -328,28 +328,28 @@
             <!-- Sidebar -->
             <div id="sidebar">
                 <h3 class="lang-zh">快速链接</h3>
-                <h3 class="lang-en">Quick Links</h3>
+                <h3 class="lang-en" style="display:none;">Quick Links</h3>
                 <ul>
-                    <li><a href="static/pages/daily-updates.html" class="lang-zh">日常动态</a><a href="static/pages/daily-updates.html" class="lang-en">Daily Updates</a></li>
+                    <li><a href="static/pages/daily-updates.html" class="lang-zh">日常动态</a><a href="static/pages/daily-updates.html" class="lang-en" style="display:none;">Daily Updates</a></li>
                 </ul>
                 
-                <h3>Research Details</h3>
+                <h3><span class="lang-zh">研究详情</span><span class="lang-en" style="display:none;">Research Details</span></h3>
                 <ul>
                     <li><a href="static/projects/research/lunar_meteorite/lunar_meteorite.html">Lunar Meteorite</a></li>
                     <li><a href="static/projects/research/iodp/iodp.html">IODP</a></li>
                 </ul>
-                <h3>Useless Programs😂</h3>
+                <h3><span class="lang-zh">没啥用的程序😂</span><span class="lang-en" style="display:none;">Useless Programs😂</span></h3>
                 <ul>
                     <li><a href="static/projects/cs2tactics/cs2tactics.html">CS2 Tactics</a></li>
                     <li><a href="static/projects/documents_hunter/documents_hunter.html">Documents Hunter</a></li>
                     <li><a href="static/projects/raman_painter/raman_painter.html">Raman Painter</a></li>
                 </ul>
-                <h3>Course Works</h3>
+                <h3><span class="lang-zh">课程作业</span><span class="lang-en" style="display:none;">Course Works</span></h3>
                 <ul>
                     <li><a href="#Geochemistry">Geochemistry</a></li>
                     <li><a href="#Instrument Technique">Instrument Technique</a></li>
                 </ul>
-                <h3>Experiment Instruments</h3>
+                <h3><span class="lang-zh">实验仪器</span><span class="lang-en" style="display:none;">Experiment Instruments</span></h3>
                 <ul>
                     <li><a href="#Leica Microscope">Leica Microscope</a></li>
                     <li><a href="#EPMA">EPMA</a></li>
