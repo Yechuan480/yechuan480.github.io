@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="YiFan Chen's Daily Updates" />
+    <meta name="author" content="YeChuan480" />
+    <title><span class="lang-zh">日常动态</span><span class="lang-en" style="display:none;">Daily Updates</span> | YiFan Chen</title>
+
+    <!-- Icon -->
+    <link rel="icon" type="image/x-icon" href="../../static/assets/favicon.ico" />
+
+    <!-- Bootstrap icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Core theme CSS (includes Bootstrap) -->
+    <link type="text/css" href="../../static/css/styles.css" rel="stylesheet" />
+    <link type="text/css" href="../../static/css/main.css" rel="stylesheet" />
+    <link type="text/css" href="../../static/css/daily-updates.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #002060; /* 主色系 RGB(0, 32, 96) */
+        }
+        body {
+            padding-top: 76px;
+        }
+        .navbar, a, h1, h2, h3, h4, h5, h6 {
+            color: var(--primary);
+        }
+        a:hover {
+            color: #002060; /* 悬停时保持一致 */
+        }
+        .container {
+            max-width: 1200px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .section-bg {
+            background: #f9f9f9;
+            border: 1px solid #002060;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        /* 语言切换按钮 */
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .language-btn {
+            background-color: #002060;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-left: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .language-btn:hover {
+            background-color: #003080;
+        }
+        .language-btn.active {
+            background-color: #001040;
+        }
+        /* 日常动态内容区域 */
+        .daily-updates-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .daily-updates {
+            max-height: none;
+            overflow-y: visible;
+        }
+    </style>
+
+    <!-- Bootstrap core JS -->
+    <script type="text/javascript" src="../../static/js/bootstrap.bundle.min.js"></script>
+
+    <!-- For Compatibility -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <!-- Markdown -->
+    <script type="text/javascript" src="../../static/js/marked.min.js"></script>
+</head>
+
+<body id="page-top">
+    <!-- Navigation -->
+    <nav class="header navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
+        <div class="container px-5">
+            <a id="page-top-title" class="navbar-brand fw-bold" href="/index.html"><span class="lang-zh">陈奕帆</span><span class="lang-en" style="display:none;">YiFan Chen</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lang-zh">菜单</span><span class="lang-en" style="display:none;">MENU</span> <i class="bi-list"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
+                    <li class="nav-item"><a class="nav-link me-lg-3" href="/index.html"><span class="lang-zh">首页</span><span class="lang-en" style="display:none;">HOME</span></a></li>
+                    <li class="nav-item"><a class="nav-link me-lg-3" href="/index.html#research"><span class="lang-zh">研究</span><span class="lang-en" style="display:none;">RESEARCH</span></a></li>
+                    <li class="nav-item"><a class="nav-link me-lg-3" href="/index.html#awards"><span class="lang-zh">奖项</span><span class="lang-en" style="display:none;">AWARDS</span></a></li>
+                    <li class="nav-item"><a class="nav-link me-lg-3" href="/index.html#internship"><span class="lang-zh">实习</span><span class="lang-en" style="display:none;">INTERNSHIP</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Language Switch -->
+    <div id="language-switcher" class="language-switch">
+        <button class="language-btn active" data-lang="zh">中文</button>
+        <button class="language-btn" data-lang="en">English</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container px-5">
+        <div class="daily-updates-container">
+            <section class="mt-5 section-bg">
+                <header>
+                    <h2 class="lang-zh">日常动态</h2>
+                    <h2 class="lang-en">Daily Updates</h2>
+                </header>
+                
+                <!-- 日常动态模块 -->
+                <div class="daily-updates">
+                    <div class="daily-updates-header">
+                        <button id="new-post-btn" class="new-post-btn lang-zh">发布动态</button>
+                        <button id="new-post-btn-en" class="new-post-btn lang-en" style="display:none;">Post Update</button>
+                    </div>
+                    
+                    <!-- 发布表单 -->
+                    <div id="post-form" class="post-form">
+                        <form>
+                            <div class="form-group">
+                                <label for="post-title" class="lang-zh">标题</label>
+                                <label for="post-title" class="lang-en" style="display:none;">Title</label>
+                                <input type="text" id="post-title" data-placeholder-zh="输入标题" data-placeholder-en="Enter title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="post-content" class="lang-zh">内容</label>
+                                <label for="post-content" class="lang-en" style="display:none;">Content</label>
+                                <textarea id="post-content" data-placeholder-zh="分享你的日常..." data-placeholder-en="Share your updates..." required></textarea>
+                            </div>
+                            <div class="form-buttons">
+                                <button id="cancel-post" type="button" class="cancel-btn lang-zh">取消</button>
+                                <button id="cancel-post-en" type="button" class="cancel-btn lang-en" style="display:none;">Cancel</button>
+                                <button id="submit-post" type="submit" class="submit-btn lang-zh">发布</button>
+                                <button id="submit-post-en" type="submit" class="submit-btn lang-en" style="display:none;">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- 帖子列表 -->
+                    <div class="timeline">
+                        <div id="posts-list"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-bottom text-center py-5" style="background-color: #002060; color: white;">
+        <div class="container px-5">
+            <div class="small">
+                <div id="copyright-text" class="mb-2"><span class="lang-zh">© 2025 陈奕帆</span><span class="lang-en" style="display:none;">© 2025 YiFan Chen</span></div>
+                <a id="github-link" href="https://github.com/yechuan480" style="color: white;"><span class="lang-zh">代码托管</span><span class="lang-en" style="display:none;">Github</span></a>
+                <span class="mx-1">·</span>
+                <a id="license-link" href="https://cc98.org" style="color: white;"><span class="lang-zh">CC98论坛</span><span class="lang-en" style="display:none;">CC98</span></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 语言切换和日常动态JS -->
+    <script type="text/javascript" src="../../static/js/language-switcher.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 日常动态功能
+            const newPostBtn = document.getElementById('new-post-btn');
+            const newPostBtnEn = document.getElementById('new-post-btn-en');
+            const postForm = document.getElementById('post-form');
+            const cancelBtn = document.getElementById('cancel-post');
+            const cancelBtnEn = document.getElementById('cancel-post-en');
+            const submitBtn = document.getElementById('submit-post');
+            const submitBtnEn = document.getElementById('submit-post-en');
+            const postsList = document.getElementById('posts-list');
+            
+            // 初始化隐藏发布表单
+            if (postForm) {
+                postForm.style.display = 'none';
+            }
+            
+            // 显示发布表单
+            newPostBtn.addEventListener('click', function() {
+                postForm.style.display = 'block';
+            });
+            
+            newPostBtnEn.addEventListener('click', function() {
+                postForm.style.display = 'block';
+            });
+            
+            // 取消发布
+            cancelBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                postForm.style.display = 'none';
+            });
+            
+            cancelBtnEn.addEventListener('click', function(e) {
+                e.preventDefault();
+                postForm.style.display = 'none';
+            });
+            
+            // 为表单的提交事件添加监听器
+            const postFormElement = document.getElementById('post-form');
+            if (postFormElement) {
+                const formInPostForm = postFormElement.querySelector('form');
+                if (formInPostForm) {
+                    formInPostForm.addEventListener('submit', function(event) {
+                        event.preventDefault(); // 阻止表单默认提交行为
+                        
+                        const titleInput = document.getElementById('post-title');
+                        const contentInput = document.getElementById('post-content');
+                        const title = titleInput.value.trim();
+                        const content = contentInput.value.trim();
+                        const currentDocumentLang = document.documentElement.lang || 'zh';
+
+                        if (!title || !content) {
+                            if (currentDocumentLang === 'zh') {
+                                alert('标题和内容不能为空！');
+                            } else {
+                                alert('Title and content cannot be empty!');
+                            }
+                            return;
+                        }
+                        
+                        const post = {
+                            title: title,
+                            content: content,
+                            date: new Date().toLocaleString(),
+                            // lang: currentDocumentLang // 可选：存储创建时的语言，用于未来可能的按语言筛选功能
+                        };
+                        
+                        let posts = JSON.parse(localStorage.getItem('dailyPosts')) || [];
+                        posts.unshift(post); // 将新帖子添加到数组开头
+                        localStorage.setItem('dailyPosts', JSON.stringify(posts));
+                        
+                        // 重置表单字段并隐藏表单
+                        titleInput.value = '';
+                        contentInput.value = '';
+                        postFormElement.style.display = 'none';
+                        
+                        displayPosts(); // 刷新帖子列表并应用语言切换
+                    });
+                }
+            }
+            
+            // 显示帖子列表
+            function displayPosts() {
+                const posts = JSON.parse(localStorage.getItem('dailyPosts')) || [];
+                postsList.innerHTML = ''; // 清空现有帖子
+                
+                posts.forEach((post, index) => {
+                    const postElement = document.createElement('div');
+                    postElement.className = 'daily-post'; // 帖子本身是语言中立的，内部元素控制语言显示
+                    postElement.innerHTML = `
+                        <div class="post-header">
+                            <h4 class="post-title">${post.title}</h4>
+                            <span class="post-date">
+                                <span class="lang-zh">发布于: ${post.date}</span>
+                                <span class="lang-en" style="display:none;">Posted on: ${post.date}</span>
+                            </span>
+                        </div>
+                        <div class="post-content">${marked.parse(post.content)}</div>
+                        <button class="delete-post-btn" data-index="${index}">
+                            <span class="lang-zh">删除</span>
+                            <span class="lang-en" style="display:none;">Delete</span>
+                        </button>
+                    `;
+                    postsList.appendChild(postElement);
+                });
+
+                // 为新的删除按钮添加事件监听器
+                document.querySelectorAll('.delete-post-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const postIndex = this.getAttribute('data-index');
+                        deletePost(postIndex);
+                    });
+                });
+                
+                // 应用当前语言设置到新渲染的帖子
+                if (window.setAppLanguage) {
+                    window.setAppLanguage(document.documentElement.lang || 'zh');
+                } else {
+                    console.warn('setAppLanguage function not found. Dynamic content might not be translated.');
+                }
+            }
+
+            // 删除帖子函数
+            function deletePost(index) {
+                let posts = JSON.parse(localStorage.getItem('dailyPosts')) || [];
+                posts.splice(index, 1); // 按索引删除帖子
+                localStorage.setItem('dailyPosts', JSON.stringify(posts));
+                displayPosts(); // 刷新帖子列表
+            }
+            
+            // 初始加载帖子
+            displayPosts();
+        });
+    </script>
+</body>
+
+</html>
