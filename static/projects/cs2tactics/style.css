@@ -1,35 +1,26 @@
-/* 全局变量定义 */
-:root {
-    --primary-color: #ff9500;
-    --primary-hover: #e08500;
-    --bg-color: #1a1a1a;
-    --container-bg: rgba(0, 0, 0, 0.7);
-    --text-color: white;
-    --border-radius: 5px;
-}
-
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: #1a1a1a;
+    color: white;
     margin: 0;
     padding: 20px;
     background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
-    background-color: var(--container-bg);
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
 }
 
 h1 {
-    color: var(--primary-color);
+    color: #ff9500;
 }
 
 .controls {
@@ -40,60 +31,34 @@ button, select {
     padding: 10px 20px;
     font-size: 16px;
     margin: 0 5px;
-    background-color: var(--primary-color);
+    background-color: #ff9500;
     border: none;
-    color: var(--text-color);
+    color: white;
     cursor: pointer;
-    border-radius: var(--border-radius);
-    transition: background-color 0.3s;
+    border-radius: 5px;
+    transition: background-color 0.3s; /* 平滑过渡 */
 }
 
 button:hover, select:hover {
-    background-color: var(--primary-hover);
+    background-color: #e08500;
 }
 
 select {
-    appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    appearance: none; /* 移除默认下拉箭头 */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* 自定义箭头 */
     background-repeat: no-repeat;
     background-position: right 10px center;
-    padding-right: 30px;
+    padding-right: 30px; /* 留出箭头空间 */
 }
 
-/* 画布样式 */
 #mapCanvas {
-    border: 2px solid var(--primary-color);
+    border: 2px solid #ff9500;
     background-color: #333;
-    max-width: 100%;
-    height: auto;
 }
 
-/* 控制组样式 */
-.control-group {
-    margin: 10px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-}
-
-.help-text {
-    font-size: 14px;
-    margin: 10px 0;
-    color: #ccc;
-}
-
-.description {
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-/* 页脚样式 */
 footer {
     margin-top: 20px;
     font-size: 14px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 footer p {
@@ -101,22 +66,10 @@ footer p {
 }
 
 footer a {
-    color: var(--primary-color);
+    color: #ff9500;
     text-decoration: none;
 }
 
 footer a:hover {
     text-decoration: underline;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    button, select {
-        padding: 8px 15px;
-        font-size: 14px;
-    }
 }
