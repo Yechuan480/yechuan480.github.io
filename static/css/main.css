@@ -1,112 +1,95 @@
-@import "./styles.css";
+@import url('styles.css');
 
-
-:root{
-    --h-title-color:#3948d2;
+:root {
+  --h-title-color: #3948d2;
 }
 
 .header {
-    border-bottom: solid 2px var(--bs-blue);
-    z-index: 10000;
+  border-bottom: 2px solid var(--bs-blue);
+  z-index: 10000;
 }
 
 .bg-bottom {
-    background-color: var(--h-title-color);
+  background-color: var(--h-title-color);
 }
 
 .top-section {
-    position: relative;
-    padding: 10rem 0;
-    background-position: center;
-    background-size: cover;
-    height: 25rem;
+  padding: 10rem 0;
+  height: 25rem;
+  background: url('background.jpeg') center center no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.top-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .top-section h2 {
-    font-weight: 400;
+  position: relative;
+  z-index: 2;
+  font-weight: 400;
 }
 
-.top-section .top-section-content {
-    position: relative;
-    z-index: 1;
+section h3 {
+  font-family: 'Kanit', sans-serif;
+  color: var(--h-title-color);
+  font-size: 2.3rem;
 }
 
-.top-section:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+body {
+  font-size: 1.3rem;
+  font-weight: 200;
+  line-height: 2.4rem;
 }
-
-section header h2{
-    font-family: "Kanit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
-    color: var(--h-title-color);
-    font-size: 2.3rem;
-    line-height: 4rem;
-}
-
-section .main-body{
-    font-size: 1.3rem;
-    font-weight: 200;
-    line-height: 2.4rem;
-}
-
 
 .bg-gradient-primary-to-secondary-light {
-    background: linear-gradient(45deg, #fcfcfc, #ffffff) !important;
+  background: linear-gradient(to bottom, white, #f8f9fa);
 }
 
 .bg-gradient-primary-to-secondary-gray {
-    background: linear-gradient(45deg, #f0f0f0, #f1f1f1) !important;
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
 }
 
-
-
-.on-top {
-    position: relative;
-    z-index: 10000;
+.avatar {
+  position: relative;
+  top: calc(100vw / 80);
 }
 
-.top-bg {
-    background-position: center;
-    background-size: fill;
-    width: 100%;
-    height: 100%;
+.avatar img {
+  height: calc(130px + 5 * (100vw - 320px) / (1600 - 320));
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
 
-.top-bg::before {
-    content: "";
-    position: absolute;
+@media (max-width: 991px) {
+  .avatar {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+  }
 }
 
-
-#avatar {
-    position: relative;
-    height: 0;
-    top:min(-65px,max(-100px,calc(-1*100vw/12)));
-    max-width: 55em;
-    margin: 0 1.5rem 0 0;
-    float: right;
-    z-index: 9000;
+/* Language Toggle Styles */
+.navbar .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--primary);
 }
 
-#avatar img {
-    height: max(130px,min(200px,calc(100vw/6)));
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+.navbar .dropdown-menu {
+  min-width: 100px;
+  text-align: center;
 }
 
-@media screen and (max-width: 991px) {
-    #avatar {
-        margin: 0;
-    }
+.navbar .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: var(--primary);
 }
-
-

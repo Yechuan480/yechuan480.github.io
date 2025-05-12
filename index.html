@@ -1,332 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="YiFan Chen's Academic Webpage" />
-    <meta name="author" content="YeChuan480" />
-    <title>YiFan Chen | 陈奕帆</title>
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
 
-    <!-- Icon -->
-    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
 
-    <!-- Bootstrap icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-
-    <!-- Core theme CSS (includes Bootstrap) -->
-    <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
-    <link type="text/css" href="static/css/main.css" rel="stylesheet" />
-
-    <!-- Custom CSS for RGB(0, 32, 96) and Layout -->
-    <style>
-        :root {
-            --primary: #002060; /* 主色系 RGB(0, 32, 96) */
-        }
-        .navbar, a, h1, h2, h3, h4, h5, h6 {
-            color: var(--primary);
-        }
-        a:hover {
-            color: #002060; /* 悬停时保持一致 */
-        }
-        b {
-            font-weight: 900;
-            font-size: 20px;
-        }
-        .year {
-            float: right;
-        }
-        .section-bg {
-            background: #f9f9f9;
-            border: 1px solid #002060;
-            border-radius: 5px;
-            padding: 20px;
-        }
-        /* 调整容器宽度 */
-        .container {
-            max-width: 1600px; /* 页面宽度为1600px */
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-        /* 页面布局 */
-        .container-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .main-content {
-            width: 75%; /* 主内容占75% */
-        }
-        /* 右侧边栏样式 */
-        #sidebar {
-            width: 20%; /* 侧边栏占20% */
-            padding: 20px;
-            background: #f9f9f9;
-            border: 1px solid #002060;
-            border-radius: 5px;
-            margin-top: 200px; /* 上边界向下移动至200px */
-        }
-        #sidebar h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            margin-top: 20px; /* 两部分标题之间的间距 */
-        }
-        #sidebar h3:first-child {
-            margin-top: 0; /* 第一个标题无上边距 */
-        }
-        #sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        #sidebar ul li {
-            margin-bottom: 10px;
-        }
-        #sidebar ul li a {
-            text-decoration: none;
-            color: #002060;
-        }
-        #sidebar ul li a:hover {
-            color: #002060;
-        }
-        /* CV链接样式 */
-        .cv-link {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 1.1rem;
-        }
-        .cv-link i {
-            margin-right: 5px;
-        }
-        /* 顶部背景图全屏 */
-        .top-section {
-            width: 100%;
-            background-size: cover;
-            background-position: center;
-            padding: 50px 0; /* 增加垂直内边距 */
-        }
-        .top-section-content {
-            max-width: 1600px; /* 与容器宽度一致 */
-            margin: 0 auto; /* 居中 */
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-    </style>
-
-    <!-- Bootstrap core JS -->
-    <script type="text/javascript" src="static/js/bootstrap.bundle.min.js"></script>
-
-    <!-- For Compatibility -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-
-    <!-- Markdown -->
-    <script type="text/javascript" src="static/js/marked.min.js"></script>
-
-    <!-- Mathematics (MathJax) -->
-    <script>
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: false,
-                processEnvironments: true,
-                processRefs: true,
-                tags: 'all',
-                tagSide: 'right',
-                tagIndent: '0.8em',
-                useLabelIds: true,
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
             }
-        };
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <!-- Core JS -->
-    <script type="text/javascript" src="static/js/scripts.js"></script>
-    <script type="text/javascript" src="static/js/js-yaml.min.js"></script>
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal academic webpage of YiFan Chen">
+  <meta name="author" content="YiFan Chen">
+  <title>YiFan Chen | 陈奕帆</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- External Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;600&family=Mulish:wght@200;500&family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/lib/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <style>
+    :root {
+      --primary: #002060;
+    }
+    nav, h1, h2, h3, h4, h5, h6, strong, a:not(.no-color) {
+      color: var(--primary);
+    }
+    .container {
+      max-width: 1600px;
+    }
+    .container-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+    .main-content {
+      width: 75%;
+    }
+    .sidebar {
+      width: 20%;
+      margin-top: 200px;
+    }
+    .sidebar a {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    .section-bg {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .avatar img {
+      max-width: 200px;
+      height: auto;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    }
+    .cv-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
 </head>
-
-<body id="page-top">
-    <!-- Navigation -->
-    <nav class="header navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
-        <div class="container px-5">
-            <a id="page-top-title" class="navbar-brand fw-bold" href="#page-top">YiFan Chen | 陈奕帆</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                MENU <i class="bi-list"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
-                    <li class="nav-item"><a class="nav-link me-lg-3" href="#page-top">HOME</a></li>
-                    <li class="nav-item"><a class="nav-link me-lg-3" href="#research">RESEARCH</a></li>
-                    <li class="nav-item"><a class="nav-link me-lg-3" href="#awards">AWARDS</a></li>
-                    <li class="nav-item"><a class="nav-link me-lg-3" href="#internship">INTERNSHIP</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container px-5">
-        <!-- Top Section -->
-        <section class="top-section" style="background-image: url('static/assets/img/background.jpeg');">
-            <div class="top-section-content">
-                <h2 id="top-section-bg-text" class="text-white display-3 lh-1 font-alt">YiFan Chen</h2>
-            </div>
-        </section>
-
-        <!-- Photo and CV Link -->
-        <div class="mt-5">
-            <div id="avatar" style="text-align: center;">
-                <img class="shadow" src="static/assets/img/photo.jpg" alt="YiFan Chen">
-                <!-- CV 下载链接放在照片正下方 -->
-                <a href="static/assets/files/YiFan_Chen_CV.pdf" class="cv-link" download>
-                    <i class="bi bi-download"></i> CV
-                </a>
-            </div>
-        </div>
-
-        <!-- Content Wrapper -->
-        <div class="container-wrapper">
-            <div class="main-content">
-                <!-- Home -->
-                <section class="mt-5" id="home">
-                    <header>
-                        <h2 id="home-subtitle">Yifan Chen | 陈奕帆</h2>
-                    </header>
-                    <div class="main-body" id="home-md">
-                        <p>He is a self-motivated junior student majoring in Geology, at Department of Earth Sciences, Zhejiang University, China.</p>
-                        <p><b>Email:</b> <a href="mailto:chen04@zju.edu.cn">chen04@zju.edu.cn</a></p>
-                        <p><b>Education:</b><br>
-                            Zhejiang University (ZJU), China, 2022 - Present<br>
-                            B.S. in Geology, GPA: 3.85/4.00<br>
-                            <i>Related courses:</i> Calculus, Physics, Linear Algebra, Probability and Mathematical Statistics, Physical Chemistry, Principles Of Mineralogy And Petrology, Geochemistry</p>
-                        <p><b>Research Interests:</b><br>
-                            Cosmochemistry, Meteoritics, Mineralogy</p>
-                    </div>
-                </section>
-
-                <!-- Research -->
-                <section class="mt-5" id="research">
-                    <div class="section-bg">
-                        <header>
-                            <h2 id="research-subtitle"><i class="bi bi-file-text-fill"></i> RESEARCH</h2>
-                        </header>
-                        <div class="main-body">
-                            <b style="font-family: 'Times New Roman', Times, serif;">Student Research Training Program</b> <span class="year"><i>2024.9 - 2025.2</i></span><br>
-                            <i>The origin of water-ice in the lunar regolith: Constraints from lunar meteorites</i><br>
-                            Supervisor: Prof. Jia Liu<br>
-                            - The origin of lunar regolith water is unclear: Solar Wind, Meteorites, Cosmic Dust, Molecular Clouds?<br>
-                            - To constrain the origin of H₂O in lunar regolith<br>
-                            - Focus on Hydrogen isotope in alteration minerals<br>
-                            - Done the basic mineral identification by microscope and SEM<br>
-                            - Determining the isotope composition by SIMS<br><br>
-
-                            <b style="font-family: 'Times New Roman', Times, serif;">Undergraduate Research Assistant</b> <span class="year"><i>Present</i></span><br>
-                            Supervisor: Prof. Jia Liu<br>
-                            - Determining the content of H₂O in Nominally Anhydrous Minerals (NAMs) of IODP & OIB Samples by FTIR<br>
-                            - Determining the trace element composition in minerals by EPMA
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Awards -->
-                <section class="mt-5" id="awards">
-                    <div class="section-bg">
-                        <header>
-                            <h2 id="awards-subtitle"><i class="bi bi-award-fill"></i> AWARDS</h2>
-                        </header>
-                        <div class="main-body">
-                            - National Second Prize of National College Students' Geological Skills Competition <span class="year"><i>Fall 2024</i></span><br>
-                            - Provincial Third Prize of Zhejiang Province College Students' Advanced Mathematics Competition <span class="year"><i>Summer 2024</i></span><br>
-                            - Scholarship of Zhejiang Province Government <span class="year"><i>Fall 2024</i></span><br>
-                            - Outstanding Student of ZJU <span class="year"><i>Fall 2023</i></span><br>
-                            - First Prize Scholarship of ZJU <span class="year"><i>Fall 2024</i></span><br>
-                            - Third Prize Scholarship of ZJU <span class="year"><i>Fall 2023</i></span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Internship -->
-                <section class="mt-5" id="internship">
-                    <div class="section-bg">
-                        <header>
-                            <h2 id="internship-subtitle"><i class="bi bi-hammer"></i> INTERNSHIP</h2>
-                        </header>
-                        <div class="main-body">
-                            Field Trip For Physical Geology in Zhejiang Province <span class="year"><i>Summer 2023</i></span><br>
-                            <div style="text-align: center;">
-                                <img src="static/assets/img/internship1.jpg" alt="Typical Lithophysa Structure" width="500" height="400"><br>
-                                <figcaption>Typical Lithophysa Structure</figcaption>
-                            </div><br>
-
-                            Geological Mapping Field Trip in the southern of Tanlu fault zone <span class="year"><i>Summer 2024</i></span><br>
-                            <div style="text-align: center;">
-                                <img src="static/assets/img/internship2.jpg" alt="Reverse Fault" width="500" height="300"><br>
-                                <figcaption>Reverse Fault</figcaption>
-                            </div><br>
-
-                            National College Students' Geological Skills Competition <span class="year"><i>Fall 2024</i></span><br>
-                            <div style="text-align: center;">
-                                <img src="static/assets/img/internship3.jpg" alt="Awards Ceremony" width="500" height="300"><br>
-                                <figcaption>Awards Ceremony</figcaption>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Sidebar -->
-            <div id="sidebar">
-                <h3>Research Details</h3>
-                <ul>
-                    <li><a href="static/projects/research/lunar_meteorite/lunar_meteorite.html">Lunar Meteorite</a></li>
-                    <li><a href="static/projects/research/iodp/iodp.html">IODP</a></li>
-                </ul>
-                <h3>Useless Programs😂</h3>
-                <ul>
-                    <li><a href="static/projects/cs2tactics/cs2tactics.html">CS2 Tactics</a></li>
-                    <li><a href="static/projects/documents_hunter/documents_hunter.html">Documents Hunter</a></li>
-                    <li><a href="static/projects/raman_painter/raman_painter.html">Raman Painter</a></li>
-                </ul>
-                <h3>Course Works</h3>
-                <ul>
-                    <li><a href="#Geochemistry">Geochemistry</a></li>
-                    <li><a href="#Instrument Technique">Instrument Technique</a></li>
-                </ul>
-                <h3>Experiment Instruments</h3>
-                <ul>
-                    <li><a href="#Leica Microscope">Leica Microscope</a></li>
-                    <li><a href="#EPMA">EPMA</a></li>
-                    <li><a href="#FTIR">FTIR</a></li>
-                    <li><a href="#RAMAN">RAMAN</a></li>
-                    <li><a href="#SIMS">SIMS</a></li>
-                    <li><a href="#SEM">SEM</a></li>
-                    <li><a href="#XRD">XRD</a></li>
-                    <li><a href="#ICP-MS">ICP-MS</a></li>
-                </ul>
-
-            </div>
-        </div>
+<body>
+  <!-- Navigation -->
+  <nav id="mainNav" class="navbar navbar-expand-lg fixed-top bg-white">
+    <div class="container">
+      <a class="navbar-brand font-alt" href="#" data-lang-key="name">YiFan Chen</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home" data-lang-key="nav_home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#research" data-lang-key="nav_research">Research</a></li>
+          <li class="nav-item"><a class="nav-link" href="#awards" data-lang-key="nav_awards">Awards</a></li>
+          <li class="nav-item"><a class="nav-link" href="#internship" data-lang-key="nav_internship">Internship</a></li>
+          <!-- Language Toggle -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-globe"></i> <span data-lang-key="language">中文</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+              <li><a class="dropdown-item lang-switch" href="#" data-lang="zh">中文</a></li>
+              <li><a class="dropdown-item lang-switch" href="#" data-lang="en">English</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="bg-bottom text-center py-5" style="background-color: #002060; color: white;">
-        <div class="container px-5">
-            <div class="small">
-                <div id="copyright-text" class="mb-2">© 2025 YiFan Chen</div>
-                <a id="github-link" href="https://github.com/yechuan480" style="color: white;">Github</a>
-                <span class="mx-1">·</span>
-                <a id="license-link" href="https://cc98.org" style="color: white;">CC98</a>
-            </div>
-        </div>
-    </footer>
+  <!-- Top Section -->
+  <section class="top-section text-white text-center">
+    <h2 class="font-alt" data-lang-key="name">YiFan Chen</h2>
+  </section>
+
+  <!-- Avatar and CV -->
+  <div class="text-center my-4">
+    <div class="avatar">
+      <img src="photo.jpg" alt="YiFan Chen's Photo">
+    </div>
+    <a href="YiFan_Chen_CV.pdf" class="cv-link" data-lang-key="cv_download"><i class="bi bi-file-earmark-pdf"></i> Download CV</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container container-wrapper">
+    <div class="main-content">
+      <section id="home" class="section-bg">
+        <h3 data-lang-key="home_title">Home</h3>
+        <div id="home-md"></div>
+      </section>
+      <section id="research" class="section-bg">
+        <h3 data-lang-key="research_title">Research</h3>
+        <div id="research-md"></div>
+      </section>
+      <section id="awards" class="section-bg">
+        <h3 data-lang-key="awards_title">Awards</h3>
+        <div id="awards-md"></div>
+      </section>
+      <section id="internship" class="section-bg">
+        <h3 data-lang-key="internship_title">Internship</h3>
+        <div id="internship-md"></div>
+      </section>
+    </div>
+    <div class="sidebar">
+      <h4 data-lang-key="sidebar_research">Research</h4>
+      <a href="#" data-lang-key="sidebar_lunar_meteorite">Lunar Meteorite</a>
+      <a href="#" data-lang-key="sidebar_iodp">IODP</a>
+      <h4 data-lang-key="sidebar_programs">Useless Programs</h4>
+      <a href="#" data-lang-key="sidebar_cs2_tactics">CS2 Tactics</a>
+      <a href="#" data-lang-key="sidebar_docs_hunter">Documents Hunter</a>
+      <a href="#" data-lang-key="sidebar_raman_painter">Raman Painter</a>
+      <h4 data-lang-key="sidebar_coursework">Coursework</h4>
+      <a href="#" data-lang-key="sidebar_geochemistry">Geochemistry</a>
+      <a href="#" data-lang-key="sidebar_instrument_technique">Instrument Technique</a>
+      <h4 data-lang-key="sidebar_instruments">Experiment Instruments</h4>
+      <a href="#" data-lang-key="sidebar_microscope">Leica Microscope</a>
+      <a href="#" data-lang-key="sidebar_epma">EPMA</a>
+      <a href="#" data-lang-key="sidebar_ftir">FTIR</a>
+      <a href="#" data-lang-key="sidebar_sims">SIMS</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-bottom text-white text-center py-3">
+    <div id="copyright-text" data-lang-key="footer_copyright">© 2025 YiFan Chen</div>
+    <div>
+      <a href="https://github.com/yechuan480" class="text-white mx-2">GitHub</a>
+      <a href="https://cc98.org" class="text-white mx-2">CC98</a>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
 </body>
-
 </html>
