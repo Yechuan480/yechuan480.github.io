@@ -1,17 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Bootstrap ScrollSpy
   const mainNav = document.querySelector('#mainNav');
-  new bootstrap.ScrollSpy(document.body, {
-    target: '#mainNav',
-    offset: 74
-  });
+  if (mainNav) {
+    new bootstrap.ScrollSpy(document.body, {
+      target: '#mainNav',
+      offset: 74
+    });
+  }
 
   // Collapse navbar on link click for mobile
   const navbarToggler = document.querySelector('.navbar-toggler');
   const responsiveNavItems = document.querySelectorAll('#navbarResponsive .nav-link');
   responsiveNavItems.forEach(function (item) {
     item.addEventListener('click', () => {
-      if (window.getComputedStyle(navbarToggler).display !== 'none') {
+      if (navbarToggler && window.getComputedStyle(navbarToggler).display !== 'none') {
         navbarToggler.click();
       }
     });
@@ -85,15 +87,22 @@ document.addEventListener('DOMContentLoaded', function () {
     sections.forEach(section => {
       fetch(`contents/${section}_${lang}.md`)
         .then(response => {
-          if (!response.ok) throw new Error(`Failed to load ${section}_${lang}.md`);
+          if (!response.ok) {
+            console.error(`Failed to load ${section}_${lang}.md: ${response.statusText}`);
+            return Promise.reject(new Error(`File not found or server error`));
+          }
           return response.text();
         })
         .then(text => {
           const mdElement = document.getElementById(`${section}-md`);
-          mdElement.innerHTML = marked.parse(text, { mangle: false, headerIds: false });
-          MathJax.typesetPromise([mdElement]).catch(err => console.error('MathJax error:', err));
+          if (mdElement) {
+            mdElement.innerHTML = marked.parse(text, { mangle: false, headerIds: false });
+            if (window.MathJax) {
+              MathJax.typesetPromise([mdElement]).catch(err => console.error('MathJax error:', err));
+            }
+          }
         })
-        .catch(err => console.error(`Error loading ${section}_${lang}.md:`, err));
+        .catch(err => console.error(`Error processing ${section}_${lang}.md:`, err));
     });
   }
 
@@ -124,11 +133,15 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       const lang = button.getAttribute('data-lang');
-      setLanguage(lang);
+      if (lang === 'zh' || lang === 'en') {
+        setLanguage(lang);
+      } else {
+        console.warn('Invalid language selected:', lang);
+      }
     });
   });
 
-  // Load YAML Config
+  // Load YAML Config (if present)
   fetch('contents/config.yml')
     .then(response => response.text())
     .then(data => {

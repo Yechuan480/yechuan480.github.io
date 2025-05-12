@@ -16,7 +16,7 @@
 .top-section {
   padding: 10rem 0;
   height: 25rem;
-  background: url('background.jpeg') center center no-repeat;
+  background: url('../assets/img/background.jpeg') center center no-repeat;
   background-size: cover;
   position: relative;
 }
