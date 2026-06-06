@@ -11,20 +11,28 @@
   const CONNECTION_DIST = 110;
   const MOUSE_RADIUS = 200;
   const MOUSE_STRENGTH = 0.04;
+  const PARTICLE_GRAVITY = 0.0015;
+  const PARTICLE_GRAVITY_RANGE = 130;
+  const PLANET_GRAVITY = 0.006;
+  const PLANET_GRAVITY_RANGE = 250;
+  const STICK_DIST = 18;
+  const STICK_FRAMES = 150;
+  const MIN_PARTICLE_SIZE = 2;
+  const MIN_EXPLODE_SIZE = 6;
 
   // Solar system — viewed nearly edge-on
   const TILT_FACTOR = 0.08;
   const ORBIT_ALPHA = 0.05;
-  const TRAIL_LENGTH = 25;
+  const TRAIL_LENGTH = 60;
   const PLANET_DATA = [
-    { name: 'Mercury', radius: 3.0, orbit: 0.10, speed: 0.0016, color: '#c4c0b8' },
-    { name: 'Venus',   radius: 4.5, orbit: 0.16, speed: 0.0012, color: '#e6d3a0' },
-    { name: 'Earth',   radius: 5.0, orbit: 0.24, speed: 0.0009, color: '#7eb8da' },
-    { name: 'Mars',    radius: 3.8, orbit: 0.32, speed: 0.0007, color: '#d4694a' },
-    { name: 'Jupiter', radius: 13,  orbit: 0.48, speed: 0.00035, color: '#d4b896' },
-    { name: 'Saturn',  radius: 10,  orbit: 0.62, speed: 0.00025, color: '#e8d5a3', hasRing: true },
-    { name: 'Uranus',  radius: 7,   orbit: 0.76, speed: 0.00015, color: '#8cc8d8' },
-    { name: 'Neptune', radius: 6.5, orbit: 0.88, speed: 0.0001, color: '#5b8eeb' },
+    { name: 'Mercury', radius: 3.0, orbit: 0.10, speed: 0.0005, color: '#c4c0b8' },
+    { name: 'Venus',   radius: 4.5, orbit: 0.16, speed: 0.0004, color: '#e6d3a0' },
+    { name: 'Earth',   radius: 5.0, orbit: 0.24, speed: 0.0003, color: '#7eb8da' },
+    { name: 'Mars',    radius: 3.8, orbit: 0.32, speed: 0.00022, color: '#d4694a' },
+    { name: 'Jupiter', radius: 13,  orbit: 0.48, speed: 0.00012, color: '#d4b896' },
+    { name: 'Saturn',  radius: 10,  orbit: 0.62, speed: 0.00008, color: '#e8d5a3', hasRing: true },
+    { name: 'Uranus',  radius: 7,   orbit: 0.76, speed: 0.00005, color: '#8cc8d8' },
+    { name: 'Neptune', radius: 6.5, orbit: 0.88, speed: 0.00003, color: '#5b8eeb' },
   ];
 
   let width, height;
@@ -56,6 +64,7 @@
       this.rotSpeed = (Math.random() - 0.5) * 0.003;
       this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
       this.opacity = Math.random() * 0.5 + 0.2;
+      this.stickTimer = 0;
       this._generateAsteroidFeatures();
     }
 
@@ -335,6 +344,121 @@
     ctx.restore();
   }
 
+  function applyGravity(planetPositions) {
+    // Particle-particle mutual attraction
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < PARTICLE_GRAVITY_RANGE && dist > 2) {
+          const force = (1 - dist / PARTICLE_GRAVITY_RANGE) * PARTICLE_GRAVITY;
+          const fx = (dx / dist) * force;
+          const fy = (dy / dist) * force;
+          a.vx += fx;
+          a.vy += fy;
+          b.vx -= fx;
+          b.vy -= fy;
+        }
+      }
+    }
+
+    // Planet gravitational pull on particles
+    for (const pp of planetPositions) {
+      for (const p of particles) {
+        const dx = pp.x - p.x;
+        const dy = pp.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < PLANET_GRAVITY_RANGE && dist > 2) {
+          const force = (1 - dist / PLANET_GRAVITY_RANGE) * PLANET_GRAVITY * (pp.mass || 1);
+          p.vx += (dx / dist) * force;
+          p.vy += (dy / dist) * force;
+        }
+      }
+    }
+  }
+
+  function processParticleFusion() {
+    const toRemove = new Set();
+    const toAdd = [];
+
+    // Check proximity and increment timers
+    for (let i = 0; i < particles.length; i++) {
+      if (toRemove.has(i)) continue;
+      let nearOther = false;
+      for (let j = i + 1; j < particles.length; j++) {
+        if (toRemove.has(j)) continue;
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < STICK_DIST) {
+          nearOther = true;
+          particles[i].stickTimer++;
+          particles[j].stickTimer++;
+          // Check if either exceeded threshold
+          if (particles[i].stickTimer > STICK_FRAMES || particles[j].stickTimer > STICK_FRAMES) {
+            const a = particles[i];
+            const b = particles[j];
+            const midX = (a.x + b.x) / 2;
+            const midY = (a.y + b.y) / 2;
+            toRemove.add(i);
+            toRemove.add(j);
+
+            const tooSmall = a.size < MIN_EXPLODE_SIZE || b.size < MIN_EXPLODE_SIZE;
+            if (tooSmall || Math.random() < 0.5) {
+              // Merge: combine into one larger particle
+              const merged = new Particle();
+              merged.x = midX;
+              merged.y = midY;
+              merged.size = Math.min(a.size + b.size, 30);
+              merged.vx = (a.vx + b.vx) / 2;
+              merged.vy = (a.vy + b.vy) / 2;
+              merged.color = Math.random() < 0.5 ? a.color : b.color;
+              merged.opacity = Math.min((a.opacity + b.opacity) / 2 + 0.15, 0.85);
+              merged.stickTimer = 0;
+              merged.rotation = (a.rotation + b.rotation) / 2;
+              merged.rotSpeed = (a.rotSpeed + b.rotSpeed) / 2;
+              toAdd.push(merged);
+            } else {
+              // Explode: break into 3-5 smaller fragments
+              const count = 3 + Math.floor(Math.random() * 3);
+              const baseSize = Math.max((a.size + b.size) / (count + 1), MIN_PARTICLE_SIZE);
+              for (let k = 0; k < count; k++) {
+                const frag = new Particle();
+                frag.x = midX;
+                frag.y = midY;
+                frag.size = baseSize * (0.6 + Math.random() * 0.8);
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 0.5 + Math.random() * 1.5;
+                frag.vx = Math.cos(angle) * speed;
+                frag.vy = Math.sin(angle) * speed;
+                frag.color = Math.random() < 0.5 ? a.color : b.color;
+                frag.opacity = Math.max(0.25, a.opacity * 0.7);
+                frag.stickTimer = 0;
+                toAdd.push(frag);
+              }
+            }
+            break;
+          }
+        }
+      }
+      if (!nearOther) {
+        particles[i].stickTimer = Math.max(0, particles[i].stickTimer - 2);
+      }
+    }
+
+    // Batch remove and add
+    if (toRemove.size > 0) {
+      const kept = [];
+      for (let i = 0; i < particles.length; i++) {
+        if (!toRemove.has(i)) kept.push(particles[i]);
+      }
+      particles = kept.concat(toAdd);
+    }
+  }
+
   function animate() {
     ctx.clearRect(0, 0, width, height);
 
@@ -342,12 +466,14 @@
     drawOrbits();
     drawSun();
     const sunR = Math.min(width, height) * 0.35;
+    const planetPositions = [];
     for (const p of planets) {
       const px = sunX + p.orbit * systemScale * Math.cos(p.angle);
       const py = sunY + p.orbit * systemScale * TILT_FACTOR * Math.sin(p.angle);
       p.trail.push({ x: px, y: py });
       if (p.trail.length > TRAIL_LENGTH) p.trail.shift();
       p.angle += p.speed;
+      planetPositions.push({ x: px, y: py, mass: p.radius / 3 });
       // Occlusion: planet behind the sun
       const distFromSun = Math.sqrt((px - sunX) ** 2 + (py - sunY) ** 2);
       const behindSun = distFromSun < sunR && Math.sin(p.angle) < 0;
@@ -355,6 +481,12 @@
         drawPlanet(p, px, py);
       }
     }
+
+    // Apply gravitational forces to particles
+    applyGravity(planetPositions);
+
+    // Check for particle fusion/explosion
+    processParticleFusion();
 
     // Update all particles
     for (const p of particles) {
@@ -442,4 +574,237 @@
     });
   });
   applyCoverLang(coverLang);
+
+  // ---- Section Scroll Navigation ----
+  const scrollContainer = document.getElementById('scrollContainer');
+  const dots = document.querySelectorAll('.dot');
+  const sections = document.querySelectorAll('.snap-section');
+
+  function updateActiveDot() {
+    const scrollTop = scrollContainer.scrollTop;
+    const h = window.innerHeight;
+    const idx = Math.round(scrollTop / h);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  scrollContainer.addEventListener('scroll', updateActiveDot, { passive: true });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      const idx = parseInt(dot.getAttribute('data-index'));
+      scrollContainer.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+    });
+  });
+
+  // ---- Photo Galleries (filmstrip) ----
+  // Photos are organized by subdirectory:
+  //   static/assets/photos/self/   → 见自己
+  //   static/assets/photos/world/  → 见天地
+  //   static/assets/photos/beings/ → 见众生
+  const PHOTO_DIRS = {
+    self:  'static/assets/photos/self/',
+    world: 'static/assets/photos/world/',
+    beings:'static/assets/photos/beings/',
+  };
+
+  const PHOTO_FILES = {
+    self:  ['微信图片_2026-06-06_221711_294.jpg'],
+    world: [
+      'IMG_5607.png',
+      '微信图片_2026-06-06_221732_525.jpg',
+      '微信图片_2026-06-06_221745_559.jpg',
+      '微信图片_2026-06-06_221756_475.jpg',
+      '微信图片_2026-06-06_221808_226.jpg',
+    ],
+    beings: [],
+  };
+
+  const galleries = {};
+
+  function buildGallery(gridId, dirKey) {
+    const container = document.getElementById(gridId);
+    if (!container) return;
+    const files = PHOTO_FILES[dirKey] || [];
+    const base = PHOTO_DIRS[dirKey];
+
+    if (files.length === 0) {
+      container.className = 'gallery-empty';
+      container.innerHTML = '<span>暂无照片</span>';
+      return;
+    }
+
+    container.className = 'gallery';
+    var html = '';
+    html += '<button class="gallery-arrow gallery-prev" disabled>&#10094;</button>';
+    html += '<div class="gallery-viewport"><div class="gallery-track">';
+    for (var i = 0; i < files.length; i++) {
+      html += '<div class="gallery-slide"><img src="' + base + files[i] + '" alt="" loading="lazy"></div>';
+    }
+    html += '</div></div>';
+    html += '<button class="gallery-arrow gallery-next">&#10095;</button>';
+    html += '<div class="gallery-dots">';
+    for (var j = 0; j < files.length; j++) {
+      html += '<button class="gallery-dot' + (j === 0 ? ' active' : '') + '" data-index="' + j + '"></button>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+
+    var state = {
+      current: 0,
+      total: files.length,
+      slides: container.querySelectorAll('.gallery-slide'),
+      prevBtn: container.querySelector('.gallery-prev'),
+      nextBtn: container.querySelector('.gallery-next'),
+      dots: container.querySelectorAll('.gallery-dot'),
+      viewport: container.querySelector('.gallery-viewport'),
+    };
+    galleries[dirKey] = state;
+
+    // Mark first slide active
+    state.slides[0].classList.add('active');
+
+    function syncUI(idx) {
+      state.current = idx;
+      state.prevBtn.disabled = idx === 0;
+      state.nextBtn.disabled = idx === state.total - 1;
+      state.dots.forEach(function (d, k) { d.classList.toggle('active', k === idx); });
+      state.slides.forEach(function (s, k) { s.classList.toggle('active', k === idx); });
+    }
+
+    function goTo(idx) {
+      if (idx < 0 || idx >= state.total) return;
+      syncUI(idx);
+      state.slides[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    // Detect active slide from scroll position
+    var scrollTimer;
+    state.viewport.addEventListener('scroll', function () {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        var vpCenter = state.viewport.getBoundingClientRect().left + state.viewport.offsetWidth / 2;
+        var bestIdx = 0, bestDist = Infinity;
+        state.slides.forEach(function (s, k) {
+          var r = s.getBoundingClientRect();
+          var dist = Math.abs(r.left + r.width / 2 - vpCenter);
+          if (dist < bestDist) { bestDist = dist; bestIdx = k; }
+        });
+        if (bestIdx !== state.current) syncUI(bestIdx);
+      }, 80);
+    }, { passive: true });
+
+    state.prevBtn.addEventListener('click', function () { goTo(state.current - 1); });
+    state.nextBtn.addEventListener('click', function () { goTo(state.current + 1); });
+
+    state.dots.forEach(function (dot) {
+      dot.addEventListener('click', function () { goTo(parseInt(dot.getAttribute('data-index'))); });
+    });
+
+    // Click image → lightbox
+    var imgs = container.querySelectorAll('.gallery-slide img');
+    imgs.forEach(function (img) {
+      img.addEventListener('click', function () { openLightbox(img.src, ''); });
+    });
+
+    // Keyboard nav
+    state._keyHandler = function (e) {
+      var section = container.closest('.snap-section');
+      if (!section) return;
+      var rect = section.getBoundingClientRect();
+      if (!(rect.top < window.innerHeight && rect.bottom > 0)) return;
+      if (e.key === 'ArrowLeft') goTo(state.current - 1);
+      if (e.key === 'ArrowRight') goTo(state.current + 1);
+    };
+    document.addEventListener('keydown', state._keyHandler);
+
+    // Drag/swipe — move viewport scrollLeft directly
+    var dragging = false, startX = 0, startScroll = 0;
+    state.viewport.addEventListener('mousedown', function (e) {
+      dragging = true; startX = e.clientX;
+      state.viewport.style.scrollBehavior = 'auto';
+      startScroll = state.viewport.scrollLeft;
+    });
+    state.viewport.addEventListener('touchstart', function (e) {
+      dragging = true; startX = e.touches[0].clientX;
+      state.viewport.style.scrollBehavior = 'auto';
+      startScroll = state.viewport.scrollLeft;
+    }, { passive: true });
+
+    function onMove(cx) {
+      if (!dragging) return;
+      state.viewport.scrollLeft = startScroll + (startX - cx);
+    }
+    state.viewport.addEventListener('mousemove', function (e) { e.preventDefault(); onMove(e.clientX); });
+    state.viewport.addEventListener('touchmove', function (e) { onMove(e.touches[0].clientX); }, { passive: true });
+
+    function onEnd(cx) {
+      if (!dragging) return;
+      dragging = false;
+      state.viewport.style.scrollBehavior = 'smooth';
+      var dx = startX - cx;
+      var thr = state.viewport.offsetWidth * 0.15;
+      if (Math.abs(dx) > thr) {
+        if (dx > 0) goTo(Math.min(state.current + 1, state.total - 1));
+        else goTo(Math.max(state.current - 1, 0));
+      } else {
+        goTo(state.current);
+      }
+    }
+    state.viewport.addEventListener('mouseup', function (e) { onEnd(e.clientX); });
+    state.viewport.addEventListener('mouseleave', function () {
+      if (dragging) { dragging = false; state.viewport.style.scrollBehavior = 'smooth'; goTo(state.current); }
+    });
+    state.viewport.addEventListener('touchend', function (e) { onEnd(e.changedTouches[0].clientX); });
+  }
+
+  buildGallery('photo-grid-1', 'self');
+  buildGallery('photo-grid-2', 'world');
+  buildGallery('photo-grid-3', 'beings');
+
+  // ---- Lightbox ----
+  let lightbox = document.getElementById('coverLightbox');
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'coverLightbox';
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+      <button class="lightbox-close">&times;</button>
+      <img src="" alt="">
+    `;
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
+
+  function openLightbox(src, label) {
+    if (!src) return;
+    const lbImg = lightbox.querySelector('img');
+    lbImg.src = src;
+    lbImg.alt = label || '';
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+  }
+
+  // Initial dot state
+  updateActiveDot();
+
+  // Scroll hint click to go to first photo section
+  const scrollHint = document.getElementById('scroll-hint');
+  if (scrollHint) {
+    scrollHint.style.pointerEvents = 'auto';
+    scrollHint.style.cursor = 'pointer';
+    scrollHint.addEventListener('click', () => {
+      scrollContainer.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    });
+  }
 })();

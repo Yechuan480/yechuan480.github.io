@@ -13,23 +13,68 @@
   <link rel="stylesheet" href="static/css/cover.css">
 </head>
 <body>
-  <canvas id="particles"></canvas>
 
-  <div class="cover-content">
-    <h1 class="name fade-in-up" id="name" data-zh="见自己，见天地，见众生" data-en="To be, To know, To do">见自己，见天地，见众生</h1>
-    <p class="subtitle" id="subtitle" data-zh="——《一代宗师》" data-en="">——《一代宗师》</p>
-    <a href="home.html" class="enter-btn fade-in" id="enter-btn">Enter</a>
-    <div class="scroll-hint fade-in" id="scroll-hint">
-      <span class="arrow"></span>
-    </div>
+  <div class="scroll-container" id="scrollContainer">
 
-    <div class="cover-lang">
-      <svg class="cover-lang-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      <a href="#" class="cover-lang-link active" data-cover-lang="zh">中</a>
-      <span class="cover-lang-divider">/</span>
-      <a href="#" class="cover-lang-link" data-cover-lang="en">EN</a>
-    </div>
+    <!-- Section 0: Cover -->
+    <section class="snap-section cover-section" id="section-cover">
+      <canvas id="particles"></canvas>
+      <div class="cover-content">
+        <h1 class="name fade-in-up" id="name" data-zh="见自己，见天地，见众生" data-en="To be, To know, To do">见自己，见天地，见众生</h1>
+        <p class="subtitle" id="subtitle" data-zh="——《一代宗师》" data-en="">——《一代宗师》</p>
+        <a href="home.html" class="enter-btn fade-in" id="enter-btn">Enter</a>
+        <div class="scroll-hint fade-in" id="scroll-hint">
+          <span class="arrow"></span>
+        </div>
+
+        <div class="cover-lang">
+          <svg class="cover-lang-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <a href="#" class="cover-lang-link active" data-cover-lang="zh">中</a>
+          <span class="cover-lang-divider">/</span>
+          <a href="#" class="cover-lang-link" data-cover-lang="en">EN</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: 见自己 / To be -->
+    <section class="snap-section photo-section" id="section-photo-1">
+      <div class="photo-inner">
+        <h2 class="photo-title" data-zh="见自己" data-en="To be">见自己</h2>
+        <p class="photo-subtitle" data-zh="自省 · 独处 · 内观" data-en="Introspection · Solitude · Within">自省 · 独处 · 内观</p>
+        <div class="photo-grid" id="photo-grid-1">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: 见天地 / To know -->
+    <section class="snap-section photo-section" id="section-photo-2">
+      <div class="photo-inner">
+        <h2 class="photo-title" data-zh="见天地" data-en="To know">见天地</h2>
+        <p class="photo-subtitle" data-zh="山川 · 星野 · 万象" data-en="Mountains · Stars · Wonders">山川 · 星野 · 万象</p>
+        <div class="photo-grid" id="photo-grid-2">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: 见众生 / To do -->
+    <section class="snap-section photo-section" id="section-photo-3">
+      <div class="photo-inner">
+        <h2 class="photo-title" data-zh="见众生" data-en="To do">见众生</h2>
+        <p class="photo-subtitle" data-zh="众生 · 人间 · 烟火" data-en="People · Life · Stories">众生 · 人间 · 烟火</p>
+        <div class="photo-grid" id="photo-grid-3">
+        </div>
+      </div>
+    </section>
+
   </div>
+
+  <!-- Section Nav Dots -->
+  <nav class="section-dots" id="sectionDots">
+    <a href="#section-cover" class="dot active" data-index="0"></a>
+    <a href="#section-photo-1" class="dot" data-index="1"></a>
+    <a href="#section-photo-2" class="dot" data-index="2"></a>
+    <a href="#section-photo-3" class="dot" data-index="3"></a>
+  </nav>
 
   <script src="static/js/cover.js"></script>
 </body>
