@@ -153,7 +153,20 @@
           this.vx = (Math.random() - 0.5) * 0.16; this.rot = Math.random() * Math.PI * 2;
           this.rv = (Math.random() - 0.5) * 0.003;
           this.cl = COLORS[Math.floor(Math.random() * COLORS.length)];
-          this.sh = Math.random() > 0.5 ? 0 : 1; this.op = Math.random() * 0.12 + 0.04;
+          this.op = Math.random() * 0.12 + 0.04;
+          // Spherical asteroid with craters
+          this.hasCrater = Math.random() < 0.45;
+          if (this.hasCrater) {
+            this.crAngle = Math.random() * Math.PI * 2;
+            this.crDist = 0.15 + Math.random() * 0.35;
+            this.crR = 0.12 + Math.random() * 0.16;
+          }
+          this.hasCrater2 = Math.random() < 0.25;
+          if (this.hasCrater2) {
+            this.cr2Angle = Math.random() * Math.PI * 2;
+            this.cr2Dist = 0.1 + Math.random() * 0.3;
+            this.cr2R = 0.06 + Math.random() * 0.08;
+          }
         }; this.rst(true);
         this.up = function () {
           this.y -= this.vy; this.x += this.vx; this.rot += this.rv;
@@ -166,12 +179,43 @@
           if (this.x < -20) this.x = w + 20; if (this.x > w + 20) this.x = -20;
         };
         this.dr = function () {
-          ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rot); ctx.globalAlpha = this.op; ctx.fillStyle = this.cl;
+          ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rot); ctx.globalAlpha = this.op;
           var s = this.r;
-          ctx.beginPath();
-          if (this.sh === 0) { ctx.moveTo(0, -s); ctx.lineTo(s * 0.6, 0); ctx.lineTo(0, s); ctx.lineTo(-s * 0.6, 0); }
-          else { ctx.moveTo(0, -s); ctx.lineTo(s * 0.7, s * 0.5); ctx.lineTo(-s * 0.7, s * 0.5); }
-          ctx.closePath(); ctx.fill(); ctx.restore();
+
+          // Sphere body
+          ctx.fillStyle = this.cl;
+          ctx.beginPath(); ctx.arc(0, 0, s, 0, Math.PI * 2); ctx.fill();
+
+          // 3D highlight gradient
+          var g = ctx.createRadialGradient(-s * 0.25, -s * 0.3, s * 0.05, 0, 0, s);
+          g.addColorStop(0, 'rgba(255,255,255,0.12)');
+          g.addColorStop(0.4, 'rgba(255,255,255,0.02)');
+          g.addColorStop(1, 'rgba(0,0,0,0.15)');
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(0, 0, s, 0, Math.PI * 2); ctx.fill();
+
+          // Crater 1
+          if (this.hasCrater) {
+            var cx = Math.cos(this.crAngle) * this.crDist * s;
+            var cy = Math.sin(this.crAngle) * this.crDist * s;
+            var cr = this.crR * s * 0.5;
+            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+            ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 0.3;
+            ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI * 2); ctx.stroke();
+          }
+
+          // Crater 2
+          if (this.hasCrater2) {
+            var cx2 = Math.cos(this.cr2Angle) * this.cr2Dist * s;
+            var cy2 = Math.sin(this.cr2Angle) * this.cr2Dist * s;
+            var cr2 = this.cr2R * s * 0.5;
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath(); ctx.arc(cx2, cy2, cr2, 0, Math.PI * 2); ctx.fill();
+          }
+
+          ctx.restore();
         };
       }
 

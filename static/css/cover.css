@@ -7,7 +7,7 @@
 }
 
 :root {
-  --bg-deep: #1a1410;
+  --bg-deep: #000000;
   --text-cream: #F5F0E8;
   --gold: #C9A96E;
   --gold-light: #E8C56D;
@@ -49,16 +49,17 @@ canvas {
 }
 
 .name {
-  font-family: 'Newsreader', 'Georgia', 'Times New Roman', serif;
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-family: 'PingFang SC', 'Noto Serif SC', 'STSong', 'Songti SC', 'Newsreader', 'Georgia', 'Times New Roman', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 400;
   color: var(--text-cream);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-align: center;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  line-height: 1.6;
 }
 
 .name.visible {
@@ -67,28 +68,21 @@ canvas {
 }
 
 .subtitle {
-  margin-top: 1.5rem;
-  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  margin-top: 1.8rem;
+  font-size: clamp(0.9rem, 1.6vw, 1.15rem);
   font-weight: 300;
   color: var(--gold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-align: center;
-  min-height: 2rem;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-.subtitle .cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1.2em;
-  background: var(--gold-light);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: blink 0.8s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.subtitle.visible {
+  opacity: 0.7;
+  transform: translateY(0);
 }
 
 .enter-btn {
@@ -147,6 +141,48 @@ canvas {
   border-right: 1.5px solid var(--gold);
   border-bottom: 1.5px solid var(--gold);
   transform: rotate(45deg);
+}
+
+/* ---- Language Switcher ---- */
+.cover-lang {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  z-index: 2;
+}
+
+.cover-lang-icon {
+  color: var(--gold);
+  opacity: 0.5;
+  margin-right: 0.15rem;
+}
+
+.cover-lang-link {
+  color: var(--gold);
+  text-decoration: none;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.cover-lang-link.active,
+.cover-lang-link:hover {
+  opacity: 0.9;
+}
+
+.cover-lang-divider {
+  color: var(--gold);
+  opacity: 0.3;
+}
+
+/* English name font */
+.name.en-font {
+  font-family: 'Times New Roman', 'Georgia', 'Newsreader', 'STSong', 'Songti SC', serif;
 }
 
 @media (max-width: 600px) {
